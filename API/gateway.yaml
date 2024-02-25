@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: nginx-ingress
+  annotations:
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: kubernetes.docker.internal
+      http:
+        paths:
+          - path: /auth
+            pathType: Prefix
+            backend:
+              service:
+                name: auth-service
+                port:
+                  number: 80
+          - path: /shop
+            pathType: Prefix
+            backend:
+              service:
+                name: shop-service
+                port:
+                  number: 9000
