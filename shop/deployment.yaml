@@ -29,8 +29,8 @@ spec:
     spec:
       containers:
         - name: shop-app
-          image: aksourav/micro_shop:latest
-          imagePullPolicy: IfNotPresent
+          image: aksourav/micro_shop:v1
+          imagePullPolicy: Always
           ports:
             - containerPort: 5001
           envFrom:

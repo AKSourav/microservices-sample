@@ -54,7 +54,8 @@ with app.app_context():
 def createShop():
     data = request.get_json()
     try:
-        url = os.environ.get('AUTH_SERVICE_HOST', 'http://localhost:5000/auth/verify')
+        hostname = os.environ.get('AUTH_SERVICE_HOST', 'localhost:5000')
+        url= f"http://{hostname}/auth/verify"
         response = requests.get(url, headers=request.headers)
 
         if response.status_code >=  400:
@@ -82,7 +83,8 @@ def createShop():
 def updateShop(shop_id):
     data = request.get_json()
     try:
-        url = os.environ.get('AUTH_SERVICE_HOST', 'http://localhost:5000/auth/verify')
+        hostname = os.environ.get('AUTH_SERVICE_HOST', 'localhost:5000')
+        url= f"http://{hostname}/auth/verify"
         response = requests.get(url, headers=request.headers)
 
         if response.status_code >=  400:
@@ -152,7 +154,8 @@ def createItem(shop_id):
         user_id = get_jwt_identity()
 
         # Verify the user's role and shopkeeper_id
-        url = os.environ.get('AUTH_SERVICE_HOST', 'http://localhost:5000/auth/verify')
+        hostname = os.environ.get('AUTH_SERVICE_HOST', 'localhost:5000')
+        url= f"http://{hostname}/auth/verify"
         response = requests.get(url, headers=request.headers)
 
         if response.status_code >=  400:
@@ -193,7 +196,8 @@ def updateItem(item_id):
     try:
         user_id = get_jwt_identity()
 
-        url = os.environ.get('AUTH_SERVICE_HOST', 'http://localhost:5000/auth/verify')
+        hostname = os.environ.get('AUTH_SERVICE_HOST', 'localhost:5000')
+        url= f"http://{hostname}/auth/verify"
         response = requests.get(url, headers=request.headers)
 
         if response.status_code >=   400:
@@ -239,7 +243,8 @@ def protected():
     
     print(request.headers.get('Authorization'))
     try:
-        url = os.environ.get('AUTH_SERVICE_HOST', 'http://localhost:5000/auth/verify')
+        hostname = os.environ.get('AUTH_SERVICE_HOST', 'localhost:5000')
+        url= f"http://{hostname}/auth/verify"
         response = requests.get(url, headers=request.headers)
 
         if response.status_code >=  400:
@@ -247,5 +252,23 @@ def protected():
             # Handle the error as needed
         else:
             return jsonify(response.json()),  200
+    except:
+        return jsonify({'message':'Something went wrong!'})  ,503
+    
+@app.route('/shop/test', methods=['GET'])
+def test():
+    
+    # print(request.headers.get('Authorization'))
+    try:
+        # url = os.environ.get('AUTH_SERVICE_HOST', 'http://localhost:5000/auth/verify')
+        # response = requests.get(url, headers=request.headers)
+
+        # if response.status_code >=  400:
+        #     print(f"Error: {response.status_code} - {response.text}")
+        #     # Handle the error as needed
+        # else:
+        data={}
+        data['AUTH_SERVICE_HOST']=os.environ.get('AUTH_SERVICE_HOST', 'http://localhost:5000/auth/verify')
+        return jsonify(data),  200
     except:
         return jsonify({'message':'Something went wrong!'})  ,503

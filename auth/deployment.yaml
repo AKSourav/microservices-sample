@@ -29,8 +29,8 @@ spec:
     spec:
       containers:
         - name: auth-app
-          image: aksourav/micro_auth:latest
-          imagePullPolicy: IfNotPresent
+          image: aksourav/micro_auth:v1
+          imagePullPolicy: Always
           ports:
             - containerPort: 5000
           envFrom:
