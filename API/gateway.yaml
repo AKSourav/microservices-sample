@@ -2,11 +2,11 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: api-gateway
-  annotations:
-    kubernetes.io/ingress.class: "nginx"
+  # annotations:
+  #   kubernetes.io/ingress.class: "nginx"
 spec:
   rules:
-    - host: kubernetes.docker.internal
+    - host: mydomain.com
       http:
         paths:
           - path: /shop
