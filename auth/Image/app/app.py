@@ -108,3 +108,14 @@ def protected():
         return jsonify(userData),  200
     else:
         return jsonify({'message': 'User not found'}),  404
+    
+@app.route('/auth/users', methods=['GET'])
+def getAllUsers():
+    try:
+        query=User.query
+        users = query.all()
+        user_schema=UserSchema(many=True)
+        user_dict = user_schema.dump(users)
+        return jsonify(user_dict),  200
+    except:
+        return jsonify({"message":"ERRor"}),  400

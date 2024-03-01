@@ -170,8 +170,9 @@ def createItem(shop_id):
         shop = Shop.query.filter_by(id=shop_id).first()
         if not shop or shop.id != shop_id:
             return jsonify({"message": "Shop not found"}),  404
-        if user.get('user_type')=="SHOPKEEPER" and shop.shopkeeper_id!=user_id:
-            return jsonify({"message": "You are not authorized to create items for this shop"}),  401
+        if user['user_type']!="SUPER":
+            if user.get('user_type')=="SHOPKEEPER" and shop.shopkeeper_id!=user_id:
+                return jsonify({"message": "You are not authorized to create items for this shop"}),  401
 
         # Create the new item
         new_item = Item(name=data.get('name'), item_type=data.get('item_type'), shop_id=shop_id)
@@ -217,7 +218,9 @@ def updateItem(item_id):
 
         # Check if the shopkeeper_id matches the shopkeeper_id of the shop
         shop = Shop.query.filter_by(id=item.shop_id).first()
-        if not shop or shop.shopkeeper_id != user_id:
+        if not shop:
+            return jsonify({"message": "Shop not found"}),  404
+        if user['user_type']=="SHOPKEEPER" and shop.shopkeeper_id != user_id:
             return jsonify({"message": "You are not authorized to update items for this shop"}),   401
 
         # Update the item's fields
